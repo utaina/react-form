@@ -1,36 +1,33 @@
 import React from "react";
 import "./Input.css";
 
-class Input extends React.Component {
-  render() {
+export default function Input ({id, type, placeholder, label, value, handelChange, error}) {
     return (
       <div className="input-field">
-        <label htmlFor={this.props.id}> {this.props.label} </label>
-        {this.props.type !== "textarea" ? (
+        <label htmlFor={id}> {label} </label>
+        {type !== "textarea" ? (
           <input
-            id={this.props.id}
+            id={id}
             className="input field"
-            type={this.props.type}
-            placeholder={this.props.placeholder}
-            onChange={this.props.handleChange}
-            onBlur={this.props.validateForm}
-            value={this.props.value}
+            type={type}
+            placeholder={placeholder}
+            value={value}
+            onChange={handelChange}
+            error={error}
           />
         ) : (
           <textarea
-            id={this.props.id}
+            id={id}
             className="textarea field"
             rows="7"
-            placeholder={this.props.placeholder}
-            onChange={this.props.handleChange}
-            onBlur={this.props.validateForm}
-            value={this.props.value}
+            placeholder={placeholder}
+            value={value}
+            onChange={handelChange}
+            error={error}
           />
         )}
-        {this.props.error && <span className="error">{this.props.error}</span>}
+        {error && <span className="error">{error}</span>}
+        {(type === "textarea" && (value && value.length >=1) && (value.length <=600)) && <span className="text-length">{value.length}/600</span>}
       </div>
     );
   }
-}
-
-export default Input;

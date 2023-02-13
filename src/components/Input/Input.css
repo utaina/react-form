@@ -1,6 +1,9 @@
+.error {
+  color: red;
+}
+
 span {
   font-size: 12px;
-  color: red;
 }
 
 input:invalid ~ span {

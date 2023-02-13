@@ -1,32 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import Form from "./components/Form/Form";
 import FinalForm from "./components/FinalForm/FinalForm";
+import { createPortal } from "react-dom";
+import Modal from "./components/Modal/Modal";
 import "./App.css";
 
-class App extends React.Component {
-  state = {};
+export default function App() {
+  const [isFormSubmit, setIsFormSubmit] = useState(false);
+  const [formInfo, setFormInfo] = useState({});
+  const [showModal, setShowModal] = useState(false);
 
-  formSubmitInfo = (info) => {
-    this.setState(info.fields);
-    this.setState({ isFormSubmit: true });
-  };
-  formSubmit = (event) => {
-    event.preventDefault();
-    this.setState({ isFormSubmit: false });
-  };
-
-  render() {
-    const isFormSubmit = this.state.isFormSubmit;
-    let content;
-    if (!isFormSubmit) {
-      content = <Form formSubmitInfo={this.formSubmitInfo}></Form>;
-    } else {
-      content = (
-        <FinalForm info={this.state} formSubmit={this.formSubmit}></FinalForm>
-      );
-    }
-    return <div className="app">{content}</div>;
+  function formSubmit(info) {
+    setFormInfo({ ...info });
+    setIsFormSubmit(true);
+    setShowModal(true);
   }
-}
 
-export default App;
+  return (
+    <div className="app">
+      {isFormSubmit ? (
+        <FinalForm info={formInfo} />
+      ) : (
+        <Form formSubmit={formSubmit} />
+      )}
+      {showModal &&
+        createPortal(
+          <Modal onClose={() => setShowModal(false)} />,
+          document.body
+        )}
+    </div>
+  );
+}
